@@ -1,0 +1,16 @@
+note over browser:
+Event listener waiting for form to be submitted
+end note
+
+note over browser:
+Input is filled and form is submitted
+end note
+
+browser->browser: new note is created\nand added to the array
+
+note over browser:
+Note list is redrawn
+New note is sent to the server
+end note
+
+browser->server: POST /new_note_spa body: { "content": TextValue, "date": }

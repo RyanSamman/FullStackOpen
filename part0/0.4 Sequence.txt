@@ -1,0 +1,37 @@
+note over browser:
+User types the note &
+Presses Save to submit the form
+end note
+
+browser->server: HTTP POST /new_note { body: { "note": InputText } }
+
+note over server:
+Save InputText in notes
+end note
+
+
+server-->browser: Redirect to /notes
+
+note over browser:
+Refresh Page
+end note
+
+browser->server: HTTP GET /notes
+server-->browser: HTML-code
+browser->server: HTTP GET /main.css
+server-->browser: main.css
+browser->server: HTTP GET /main.js
+server-->browser: main.js
+
+note over browser:
+Browser runs Javascript,
+sends out a XHR to retrieve notes
+end note
+
+browser->server: HTTP GET /data.json
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+
+note over browser:
+Javascript manipulates the DOM,
+Displaying the posts as <li> elements
+end note
