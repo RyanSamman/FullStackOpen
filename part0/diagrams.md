@@ -18,3 +18,5 @@ Analysis of a ["single page" variant](https://fullstack-exampleapp.herokuapp.com
 ## How the single page website creates and displays a new note
 
 ![Diagram 0.6](<0.6 Diagram.png>)
+
+[Back to the Main Page](../README.MD)
