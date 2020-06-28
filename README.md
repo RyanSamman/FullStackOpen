@@ -14,13 +14,13 @@ This is all of my notes and work for the course [Full Stack Open](https://fullst
 - [Part 9 - Typescript](<#Part 9 - Typescript>)
 
 # Part 0 - Fundamentals of Web apps
-Understanding & Visualizing a simple website and it's components (HTML, CSS, Javascript)
+Understanding & Visualizing a simple website, it's components, and routing (HTML, CSS, Javascript)
 
 Example:
 
 ![alt text](<part0/0.5 Diagram.png>)
 
-[More diagrams here!](part0/diagrams.md)
+[More detail here!](part0/diagrams.md)
 
 [Back to Contents](#Contents)
 
