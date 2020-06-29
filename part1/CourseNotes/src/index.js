@@ -1,35 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
-const App = (props) => {
-	const [left, setLeft] = useState(0)
-	const [right, setRight] = useState(0)
-	const [allClicks, setAll] = useState([])
+const Header = (props) => {
+	return (
+		<h1>{props.course}</h1>
+	)
+}
 
-	console.log('refresh')
+const Part = (props) => {
+	return (
+		<p>
+			{props.part.name} {props.part.exercises}
+		</p>
+	)
+}
 
-	const handleLeftClick = () => {
-		// New Object should be created, not changing the old object,
-		// It checks if the object has changed before refreshing the component, expecially in pure components
-		// https://daveceddia.com/why-not-modify-react-state-directly/#:~:text=Mutating%20state%20directly%20can%20lead,its%20parent%20re%2Drenders).
-		setAll(allClicks.concat('L'))
-		setLeft(left + 1)
-	}
+const Content = (props) => {
+	return (
+		<div>
+			<Part part={props.parts[0]} />
+			<Part part={props.parts[1]} />
+			<Part part={props.parts[2]} />
+		</div>
+	)
+}
 
-	const handleRightClick = () => {
-		setAll(allClicks.concat('R'))
-		setRight(right + 1)
-	}
+const Total = (props) => {
+	return (
+		<p> Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+	)
+}
+
+const App = () => {
+	const course = 'Half Stack application development'
+	const parts = [
+		{
+			name: 'Fundamentals of React',
+			exercises: 10
+		},
+		{
+			name: 'Using props to pass data',
+			exercises: 7
+		},
+		{
+			name: 'State of a component',
+			exercises: 14
+		}
+	]
 
 	return (
 		<div>
-			<div>
-				{left}
-				<button onClick={handleLeftClick}>left</button>
-				<button onClick={handleRightClick}>right</button>
-				{right}
-				<p>{allClicks.join(' ')}</p>
-			</div>
+			<Header course={course} />
+			<Content parts={parts} />
+			<Total parts={parts} />
 		</div>
 	)
 }
