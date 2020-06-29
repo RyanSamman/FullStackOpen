@@ -1,53 +1,32 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
+import { Anecdote, GreatestAnecdote } from './AnecdotesComponents'
 
-const Votes = ({votes}) => {
-if (votes) return <p>has {votes} votes</p>
-  return <></>
-}
+const App = ({ anecdotes }) => {
+  const getRandomAnecdoteIndex = () => Math.floor(Math.random() * anecdotes.length)
 
-const Anecdote = ({anecdote, votes}) => {
-  return (
-    <>
-      <div>{anecdote}</div>
-      <Votes votes={votes}/>
-    </>
-  )
-}
-
-const GreatestVotes = ({anecdotes, anecdoteArray, greatest}) => {
-  console.log(anecdotes, anecdoteArray, greatest)
-  if (!greatest) return <></>
-  return <Anecdote anecdote={anecdotes[greatest]} votes={anecdoteArray[greatest]} />
-}
-
-const App = ({anecdotes}) => {
-  const [selected, setSelected] = useState(() => Math.floor(Math.random() * anecdotes.length))
-  const selectRandomAnecdote = () => setSelected(Math.floor(Math.random() * anecdotes.length))
-
+  const [selected, setSelected] = useState(() => getRandomAnecdoteIndex())
   const [anecdoteArray, setAnecdoteArray] = useState(() => Array(6).fill(0))
-
-  const [greatest, setGreatest] = useState()
+  const [greatest, setGreatest] = useState(0)
 
   const addAnecdoteVote = () => {
     const newArray = [...anecdoteArray]
     newArray[selected]++
     setAnecdoteArray(newArray)
 
-    let x = anecdoteArray.reduce((grtest, currentValue, currentIndex, array) => {
-      console.log(array[currentIndex], array[grtest] , currentIndex, )
+    setGreatest(newArray.reduce((grtest, _currentValue, currentIndex, array) => {
       if (array[currentIndex] > array[grtest]) return currentIndex
       return grtest
-    }, 0)
-    console.log({x})
+    }, 0))
   }
 
   return (
     <>
       <Anecdote greatest={greatest} anecdote={anecdotes[selected]} votes={anecdoteArray[selected]} />
       <button onClick={addAnecdoteVote}>vote</button>
-      <button onClick={selectRandomAnecdote}>next anectote</button>
-      <GreatestVotes greatest={greatest} anecdotes={anecdotes} anecdoteArray={anecdoteArray}/>
+      <button onClick={() => setSelected(getRandomAnecdoteIndex())}>next anectote</button>
+      <br /><br />
+      <GreatestAnecdote greatest={greatest} anecdotes={anecdotes} anecdoteArray={anecdoteArray} />
     </>
   )
 }
