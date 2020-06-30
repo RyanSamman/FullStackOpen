@@ -1,41 +1,59 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const notes = [
-  {
-    id: 1,
-    content: 'HTML is easy',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true
-  },
-  {
-    id: 2,
-    content: 'Browser can execute only Javascript',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false
-  },
-  {
-    id: 3,
-    content: 'GET and POST are the most important methods of HTTP protocol',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true
-  }
-]
+const Note = ({note}) => <li>{note.content}</li>
 
 const App = (props) => {
-  const { notes } = props
+	const [notes, setNotes] = useState(props.notes)
+	const [newNote, setNewNote] = useState('NoteTest')
+	const [showAll, setShowAll] = useState(true)
 
-  return (
-    <div>
-      <h1>Notes</h1>
-      <ul>
-        {notes.map((note) => <li key={note.id}>{note.content}</li>)}
-      </ul>
-    </div>
-  )
+	const addNote = (event) => {
+		event.preventDefault()
+
+		const noteObject = {
+			content: newNote,
+			date: new Date().toISOString,
+			important: Math.random() < 0.5,
+			id: notes.length + 1
+		}
+
+		setNotes(notes.concat(noteObject))
+		setNewNote('')
+	}
+
+	const shownNotes = showAll
+		? notes
+		: notes.filter(note => note.important)
+
+	return (
+		<div>
+		<h1>Notes</h1>
+		<ul>
+			{ shownNotes.map(note => <Note key={note.id} note={note} />) }
+		</ul>
+		<form onSubmit={addNote}>
+			<input value={newNote} onChange={(event) => setNewNote(event.target.value) }></input>
+			<button type="submit">save</button>
+		</form>
+		<button onClick={() => setShowAll(!showAll)}>{showAll ? "Show Important" : "Show All"}</button>
+		</div>
+	)
 }
 
-ReactDOM.render(
-  <App notes={notes} />,
-  document.getElementById('root')
-)
+const notes = [
+	{
+		'content': 'test',
+		'id': 1
+	},
+	{
+		'content': 'test2',
+		'id': 2
+	},
+	{
+		'content': 'testing3',
+		'id': 3
+	}
+]
+
+ReactDOM.render(<App notes={notes}/>, document.getElementById('root'))
