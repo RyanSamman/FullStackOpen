@@ -1,12 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
 
-const Note = ({note}) => <li>{note.content}</li>
+const Note = ({ note }) => <li>{note.content}</li>
 
-const App = (props) => {
-	const [notes, setNotes] = useState(props.notes)
-	const [newNote, setNewNote] = useState('NoteTest')
+const App = () => {
+	const [notes, setNotes] = useState([])
+	const [newNote, setNewNote] = useState('')
 	const [showAll, setShowAll] = useState(true)
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:3001/notes')
+			.then((response) => setNotes(response.data))
+	}, [])
+
+	// Need to update the server when a new note is added...
 
 	const addNote = (event) => {
 		event.preventDefault()
@@ -28,32 +37,17 @@ const App = (props) => {
 
 	return (
 		<div>
-		<h1>Notes</h1>
-		<ul>
-			{ shownNotes.map(note => <Note key={note.id} note={note} />) }
-		</ul>
-		<form onSubmit={addNote}>
-			<input value={newNote} onChange={(event) => setNewNote(event.target.value) }></input>
-			<button type="submit">save</button>
-		</form>
-		<button onClick={() => setShowAll(!showAll)}>{showAll ? "Show Important" : "Show All"}</button>
+			<h1>Notes</h1>
+			<ul>
+				{shownNotes.map(note => <Note key={note.id} note={note} />)}
+			</ul>
+			<form onSubmit={addNote}>
+				<input value={newNote} onChange={(event) => setNewNote(event.target.value)}></input>
+				<button type="submit">save</button>
+			</form>
+			<button onClick={() => setShowAll(!showAll)}>{showAll ? "Show Important" : "Show All"}</button>
 		</div>
 	)
 }
 
-const notes = [
-	{
-		'content': 'test',
-		'id': 1
-	},
-	{
-		'content': 'test2',
-		'id': 2
-	},
-	{
-		'content': 'testing3',
-		'id': 3
-	}
-]
-
-ReactDOM.render(<App notes={notes}/>, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
