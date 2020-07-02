@@ -2,13 +2,22 @@ import React from 'react'
 
 import phonebookService from '../services/phonebookService'
 
-const People = ({ people, setPeople }) => {
+const People = ({ people, setPeople, setNotification }) => {
 
 	const deletePerson = personToDelete => {
 		if (window.confirm(`Delete ${personToDelete.name} ?`)) {
 			phonebookService.deletePerson(personToDelete.id)
 				.then((deletedPerson) => {
+					setPeople(people.filter(person => person.id !== deletedPerson.id))
+				})
+				.catch(err => {
 					setPeople(people.filter(person => person.id !== personToDelete.id))
+					setNotification({
+						type: 'error',
+						text: `Information of ${personToDelete.name} has already been removed from server`
+					})
+
+					setTimeout(() => setNotification(null), 5000)
 				})
 		}
 	}

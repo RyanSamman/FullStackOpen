@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 // Services
 import phonebookService from '../services/phonebookService'
 
-const PersonForm = ({ people, setPeople }) => {
+const PersonForm = ({ people, setPeople, setNotification }) => {
 	const [formName, setFormName] = useState('')
 	const [formNumber, setFormNumber] = useState('')
 
 	const addPerson = (event) => {
+		// Note: If you are looking at the design of this code, yes, it can be better,
+		// However, Since the course hasn't gone over async/await, I decided not to use it and just duplicate the common aspects
 		event.preventDefault()
 		let newPerson = { name: formName, number: formNumber }
 		const match = people.find((person) => person.name === formName)
@@ -22,6 +24,15 @@ const PersonForm = ({ people, setPeople }) => {
 					))
 					setFormName('')
 					setFormNumber('')
+					return updatedPerson
+				})
+				.then((updatedPerson) => {
+					setNotification({
+						type: 'added',
+						text: `Updated ${updatedPerson.name}`
+					})
+
+					setTimeout(() => setNotification(null), 5000)
 				})
 		}
 
@@ -30,6 +41,15 @@ const PersonForm = ({ people, setPeople }) => {
 				setPeople(people.concat(createdPerson))
 				setFormName('')
 				setFormNumber('')
+				return createdPerson
+			})
+			.then((createdPerson) => {
+				setNotification({
+					type: 'added',
+					text: `Added ${createdPerson.name}`
+				})
+
+				setTimeout(() => setNotification(null), 5000)
 			})
 	}
 
